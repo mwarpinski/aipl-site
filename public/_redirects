@@ -1,0 +1,8 @@
+# Cloudflare Pages redirects (https://developers.cloudflare.com/pages/configuration/redirects/): short addresses for
+# the documents that live in the repository. Each answers 302, so they can be pointed elsewhere later.
+/tour      https://github.com/mwarpinski/AIPL/blob/main/docs/TOUR.md      302
+/spec      https://github.com/mwarpinski/AIPL/blob/main/AIPL_SPEC.md      302
+/faq       https://github.com/mwarpinski/AIPL/blob/main/docs/FAQ.md       302
+/roadmap   https://github.com/mwarpinski/AIPL/blob/main/ROADMAP.md        302
+/releases  https://github.com/mwarpinski/AIPL/releases                    302
+/github    https://github.com/mwarpinski/AIPL                             302
