@@ -1,0 +1,19 @@
+# The built site is what its sources make, and it is consistent: links and anchors, canonical addresses, the social
+# image, the host's files. Needs only Python 3.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  site:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: public/ is what the sources make
+        run: python3 build.py --check
+      - name: Links, anchors, canonical addresses, and the host's files
+        run: python3 check_links.py
