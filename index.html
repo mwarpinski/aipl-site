@@ -6,17 +6,19 @@
 <title>AIPL, the AI Programming Language</title>
 <meta name="description" content="A small, statically typed systems language meant to be written by AI coding agents. Contracts on every call, errors that say where, a compiler that compiles itself.">
 <meta name="color-scheme" content="light dark">
-<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <link rel="stylesheet" href="/assets/style.css">
 <meta property="og:title" content="AIPL, the AI Programming Language">
 <meta property="og:description" content="A small, statically typed systems language meant to be written by AI coding agents. Contracts on every call, errors that say where, a compiler that compiles itself.">
 <meta property="og:type" content="website">
+<meta property="og:image" content="/assets/og.png">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <header class="site">
   <div class="wrap">
-    <a class="brand" href="/" aria-label="AIPL home"><b>(</b>aipl<b>)</b></a>
+    <a class="brand" href="/" ><img src="/assets/logo-mark.png" alt="AIPL" width="48" height="48"></a>
     <nav class="main" aria-label="Main">
       <a href="/install.html">Install</a>
       <a href="/docs.html">Docs</a>
@@ -132,7 +134,28 @@ gcd: 21
   </div>
 </section>
 
-<!-- BENCH -->
+<section class="alt" id="speed">
+  <div class="wrap">
+    <h2>Not as fast as C. Mostly well ahead of Python.</h2>
+    <p class="sub">Native executables take 1.2 to 7.1 times as long as C on the seven benchmarks that have a C time here, and are ahead of Python on six of the eight and level with it on one (k-nucleotide). The one that loses to Python, big-number arithmetic, is where Python's integers are C. The checks that make AIPL safer cost speed too: integer overflow traps alone slow the most arithmetic-heavy programs by as much as 60 to 80 percent.</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Benchmark</th><th>Input</th><th class="num">AIPL native</th><th class="num">Time as long as C</th><th class="num">C (gcc -O2)</th><th class="num">Python 3</th></tr></thead>
+        <tbody>
+          <tr><td>binarytrees</td><td>16</td><td class="num">0.386 s</td><td class="num">2.4×<span class="bar" style="width:30px"></span></td><td class="num">0.163 s</td><td class="num">1.253 s</td></tr>
+          <tr><td>fannkuch</td><td>10</td><td class="num">0.345 s</td><td class="num">2.4×<span class="bar" style="width:30px"></span></td><td class="num">0.146 s</td><td class="num">4.929 s</td></tr>
+          <tr><td>knucleotide</td><td>150,000 bases</td><td class="num">0.376 s</td><td class="num">7.1×<span class="bar" style="width:89px"></span></td><td class="num">0.053 s</td><td class="num">0.399 s</td></tr>
+          <tr><td>mandelbrot</td><td>1000</td><td class="num">0.060 s</td><td class="num">1.2×<span class="bar" style="width:15px"></span></td><td class="num">0.051 s</td><td class="num">2.251 s</td></tr>
+          <tr><td>nbody</td><td>1,000,000</td><td class="num">0.167 s</td><td class="num">3.5×<span class="bar" style="width:43px"></span></td><td class="num">0.048 s</td><td class="num">4.237 s</td></tr>
+          <tr><td>pidigits</td><td>10,000</td><td class="num">4.171 s</td><td class="num">n/a</td><td class="num">n/a</td><td class="num">2.225 s</td></tr>
+          <tr><td>spectralnorm</td><td>1000</td><td class="num">0.139 s</td><td class="num">3.4×<span class="bar" style="width:42px"></span></td><td class="num">0.041 s</td><td class="num">5.210 s</td></tr>
+          <tr><td>spigot</td><td>10,000</td><td class="num">2.021 s</td><td class="num">2.2×<span class="bar" style="width:27px"></span></td><td class="num">0.937 s</td><td class="num">42.668 s</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:20px;color:var(--ink-3);font-size:15px">Best of five, 2026-11-08, on an AMD Ryzen 7 5700X, gcc 13.3, Python 3.12, from a fresh clone, on a machine with nothing else running. The pidigits C program uses GMP, whose headers were not installed. WebAssembly under wasmtime, the unoptimized builds, and what each check costs are in <a href="https://github.com/mwarpinski/AIPL/blob/main/docs/BENCHMARKS.md">BENCHMARKS.md</a>.</p>
+  </div>
+</section>
 
 <section id="status">
   <div class="wrap">
@@ -156,7 +179,7 @@ gcd: 21
 <footer class="site">
   <div class="wrap">
     <div>
-      <a class="brand" href="/" style="padding:0"><b>(</b>aipl<b>)</b></a>
+      <a class="brand" href="/" style="padding:0"><img src="/assets/logo-mark.png" alt="AIPL" width="48" height="48"></a>
       <p>The AI Programming Language. Designed by Matt Warpinski, implemented with AI coding agents. MIT licensed.</p>
     </div>
     <div>

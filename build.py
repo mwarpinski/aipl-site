@@ -49,11 +49,13 @@ def render(path):
 <title>{title}</title>
 <meta name="description" content="{meta['description']}">
 <meta name="color-scheme" content="light dark">
-<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <link rel="stylesheet" href="/assets/style.css">
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{meta['description']}">
 <meta property="og:type" content="website">
+<meta property="og:image" content="/assets/og.png">
 </head>
 <body>
 {header}<main id="main">
