@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Install AIPL</title>
+<meta name="description" content="One command installs AIPL on Linux, macOS or Windows: no git, no Rust, no administrator rights.">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/style.css">
+<meta property="og:title" content="Install AIPL">
+<meta property="og:description" content="One command installs AIPL on Linux, macOS or Windows: no git, no Rust, no administrator rights.">
+<meta property="og:type" content="website">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="AIPL home"><b>(</b>aipl<b>)</b></a>
+    <nav class="main" aria-label="Main">
+      <a href="/install.html" aria-current="page">Install</a>
+      <a href="/docs.html">Docs</a>
+      <a href="/status.html">Status</a>
+      <a class="gh" href="https://github.com/mwarpinski/AIPL" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+<main id="main">
+<div class="page">
+  <div class="wrap prose">
+    <p class="eyebrow">Install</p>
+    <h1>Install AIPL</h1>
+    <p>One command, no git, no Rust, and nothing runs as root. It downloads the release for your machine, checks it against its published SHA-256, and unpacks it into <code>~/.aipl</code>.</p>
+
+    <div class="os" role="tablist" aria-label="Operating system" data-os data-tabs>
+      <button role="tab" id="o-linux" aria-controls="os-linux" aria-selected="true">Linux</button>
+      <button role="tab" id="o-mac" aria-controls="os-mac" aria-selected="false" tabindex="-1">macOS</button>
+      <button role="tab" id="o-win" aria-controls="os-win" aria-selected="false" tabindex="-1">Windows</button>
+    </div>
+
+    <div id="os-linux" role="tabpanel" aria-labelledby="o-linux">
+      <p><span class="pill ok">supported</span> x86-64 and AArch64. Needs <code>curl</code> and <code>tar</code>, and glibc 2.35 or newer.</p>
+      <div class="cmd"><code>curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/mwarpinski/AIPL/main/install.sh | sh</code><button class="copy" type="button">Copy</button></div>
+      <p>You get <code>aipl</code>, the compiler written in AIPL, and <code>aipl-net</code>, a small helper for host names and HTTPS, plus the standard library and the documentation, and <code>~/.aipl/bin</code> on your <code>PATH</code>.</p>
+    </div>
+    <div id="os-mac" role="tabpanel" aria-labelledby="o-mac" hidden>
+      <p><span class="pill pre">preview</span> Apple silicon. Needs <code>curl</code> and <code>tar</code>.</p>
+      <div class="cmd"><code>curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/mwarpinski/AIPL/main/install.sh | sh</code><button class="copy" type="button">Copy</button></div>
+      <div class="note">macOS gets the Rust build of <code>aipl</code> and <code>aipl-run</code> for now, and the binary is not notarised, so macOS may ask you to allow it. <code>compile --exe</code> there makes a 15 to 20&nbsp;MB file that bundles the launcher. Native executables on macOS need a Mach-O backend, which is next on the <a href="https://github.com/mwarpinski/AIPL/blob/main/ROADMAP.md">roadmap</a>.</div>
+    </div>
+    <div id="os-win" role="tabpanel" aria-labelledby="o-win" hidden>
+      <p><span class="pill pre">preview</span> Windows 10 or 11, x86-64. In PowerShell:</p>
+      <div class="cmd ps"><code>irm https://raw.githubusercontent.com/mwarpinski/AIPL/main/install.ps1 | iex</code><button class="copy" type="button">Copy</button></div>
+      <p>It needs no git, no Rust, no Visual C++ runtime and no administrator rights. It unpacks into <code>%USERPROFILE%\.aipl</code> and adds its <code>bin</code> to your user <code>PATH</code>; open a new terminal to see it.</p>
+      <div class="note">A program on Windows sees the root of the drive it runs from as <code>/</code> and reaches no other drive, and the installer is not code-signed, so SmartScreen may warn. <code>compile --exe</code> makes a single file that bundles the launcher.</div>
+    </div>
+
+    <h2>Then</h2>
+    <div class="cmd"><code>aipl --version
+aipl doc str | head</code><button class="copy" type="button">Copy</button></div>
+    <p>Write a file, <code>aipl verify</code> it, <code>aipl run</code> it. The <a href="https://github.com/mwarpinski/AIPL/blob/main/docs/TOUR.md">ten-minute tour</a> goes through the language, and <a href="https://github.com/mwarpinski/AIPL/blob/main/docs/USING_AIPL.md">Using AIPL</a> covers build, run and test.</p>
+
+    <h2>Read the installer first</h2>
+    <p>It is about 300 lines of POSIX <code>sh</code>.</p>
+    <div class="cmd"><code>curl --proto '=https' --tlsv1.2 -sSfO https://raw.githubusercontent.com/mwarpinski/AIPL/main/install.sh
+less install.sh &amp;&amp; sh install.sh</code><button class="copy" type="button">Copy</button></div>
+    <p><code>sh install.sh --help</code> lists the options: <code>--version</code> installs a release other than the latest, <code>--no-modify-path</code> leaves your shell files alone. Run it again to update; <code>sh install.sh --uninstall</code> removes everything it put there.</p>
+
+    <h2>Verify a download</h2>
+    <p>Each release on the <a href="https://github.com/mwarpinski/AIPL/releases">releases page</a> lists SHA-256 sums for every file, and the list is signed with Sigstore (keyless, from the release workflow in this repository). <a href="https://github.com/mwarpinski/AIPL/blob/main/docs/RELEASING.md">RELEASING.md</a> has the commands to check a signature by hand.</p>
+
+    <h2>Build it from source</h2>
+    <p>On Linux, x86-64 or AArch64, you need only git and a POSIX shell. The repository holds a seed, a compiler built earlier, and one script builds the compiler from the sources with it: no Rust, no network.</p>
+    <div class="cmd"><code>git clone https://github.com/mwarpinski/AIPL.git &amp;&amp; cd AIPL
+sh bootstrap/build.sh</code><button class="copy" type="button">Copy</button></div>
+    <p>The script builds the compiler with the seed, builds it again with the result, and checks that a third build is identical. The result is <code>target/bootstrap/aipl</code>. On macOS and Windows, and to run the Rust referee, you need a stable Rust toolchain; <code>sh install.sh --from-source</code> does it for you.</p>
+  </div>
+</div>
+</main>
+<footer class="site">
+  <div class="wrap">
+    <div>
+      <a class="brand" href="/" style="padding:0"><b>(</b>aipl<b>)</b></a>
+      <p>The AI Programming Language. Designed by Matt Warpinski, implemented with AI coding agents. MIT licensed.</p>
+    </div>
+    <div>
+      <h4>Use it</h4>
+      <a href="/install.html">Install</a>
+      <a href="https://github.com/mwarpinski/AIPL/blob/main/docs/TOUR.md">Ten-minute tour</a>
+      <a href="https://github.com/mwarpinski/AIPL/blob/main/docs/FAQ.md">FAQ</a>
+    </div>
+    <div>
+      <h4>Learn</h4>
+      <a href="/docs.html">Documentation</a>
+      <a href="https://github.com/mwarpinski/AIPL/blob/main/AIPL_SPEC.md">Language specification</a>
+      <a href="https://github.com/mwarpinski/AIPL/blob/main/docs/BENCHMARKS.md">Benchmarks</a>
+    </div>
+    <div>
+      <h4>Project</h4>
+      <a href="/status.html">Status</a>
+      <a href="https://github.com/mwarpinski/AIPL">Source on GitHub</a>
+      <a href="https://github.com/mwarpinski/AIPL/blob/main/SECURITY.md">Security</a>
+      <a href="https://github.com/mwarpinski/AIPL/blob/main/CONTRIBUTING.md">Contributing</a>
+    </div>
+  </div>
+</footer>
+<script src="/assets/site.js" defer></script>
+</body>
+</html>

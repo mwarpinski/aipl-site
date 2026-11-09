@@ -1,0 +1,42 @@
+title: AIPL status
+description: What AIPL does today, what is unfinished, and what has not been measured yet. Stated before anyone has to ask.
+nav: status
+
+<div class="page">
+  <div class="wrap prose">
+    <p class="eyebrow">Status</p>
+    <h1>Early, and honest about it</h1>
+    <p>The language, the standard library and both compilers work and are heavily tested. Everything here that is unfinished, we would rather you read from us first.</p>
+
+    <h2>Platforms</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Platform</th><th>Status</th><th>What it ships</th></tr></thead>
+        <tbody>
+          <tr><td>Linux x86-64</td><td><span class="pill ok">supported</span></td><td>The self-hosted <code>aipl</code>, built from the checked-in seed with no Rust compiler, and <code>aipl-net</code>, the one Rust helper (host names and HTTPS). Native executables.</td></tr>
+          <tr><td>Linux AArch64</td><td><span class="pill ok">supported</span></td><td>The same, built on an AArch64 machine. CI tests it on arm64 runners; the installer has not been run on a physical one.</td></tr>
+          <tr><td>macOS (Apple silicon)</td><td><span class="pill pre">preview</span></td><td>The Rust <code>aipl</code> and <code>aipl-run</code>. <code>compile --exe</code> bundles the launcher (15 to 20&nbsp;MB). Not notarised. Checked by hand.</td></tr>
+          <tr><td>Windows 10/11 (x86-64)</td><td><span class="pill pre">preview</span></td><td>The same, with a PowerShell installer. Not code-signed. A program sees only the drive it runs from. Built and tested in CI.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>What has not been measured</h2>
+    <p>The question the project exists to answer is whether agents write correct programs more often in AIPL than in other languages. That has <strong>not been measured yet</strong>. The harness exists; the measurement, with its tasks, prompts, transcripts and numbers, including where AIPL loses, comes after launch. Until then, every claim about helping agents is a design intent, not a result.</p>
+
+    <h2>What is not there</h2>
+    <ul>
+      <li><strong>Stability.</strong> Modules can declare the language version they were written for, but nothing yet promises that a program written today builds next year.</li>
+      <li><strong>Packages and a registry.</strong> Imports resolve by file name through a search path.</li>
+      <li><strong>A language server.</strong> Editor grammars (TextMate and tree-sitter) and a VS Code extension exist; they are not published to a marketplace.</li>
+      <li><strong>Native executables off Linux.</strong> Mach-O and PE backends are the next large piece of work.</li>
+      <li><strong>TLS written in AIPL.</strong> HTTPS goes through the small Rust helper <code>aipl-net</code>.</li>
+      <li><strong>Speed like C.</strong> It is not as fast; the benchmark table says how far behind, and what the overflow checks cost.</li>
+    </ul>
+    <p>The full list, with each limit and the way around it, is in <a href="https://github.com/mwarpinski/AIPL/blob/main/docs/LIMITS.md">LIMITS.md</a>; what comes next, in order, is in the <a href="https://github.com/mwarpinski/AIPL/blob/main/ROADMAP.md">roadmap</a>.</p>
+
+    <h2>How it was built</h2>
+    <p>The language is designed by Matt Warpinski and implemented with AI coding agents; the commit messages say so. Because of that the project leans on checking: two independent compilers that must agree on every program, an interpreter and two backends that must agree, fuzzers on every push, a compiler that rebuilds itself to a fixed point from a hash-checked seed, and documents checked against the code.</p>
+    <div class="note">Found a security problem? <a href="https://github.com/mwarpinski/AIPL/blob/main/SECURITY.md">SECURITY.md</a> says how to report it.</div>
+  </div>
+</div>

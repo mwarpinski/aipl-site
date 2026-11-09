@@ -1,0 +1,130 @@
+title: AIPL, the AI Programming Language
+description: A small, statically typed systems language meant to be written by AI coding agents. Contracts on every call, errors that say where, a compiler that compiles itself.
+nav: home
+
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <a class="status-chip" href="/status.html">Early, and honest about it: what works and what doesn't</a>
+      <h1>A programming language for <em>agents</em> to write, and people to read.</h1>
+      <p class="lede">AIPL is a small, statically typed systems language meant to be written by AI coding agents and read by people. Every type is written out, nothing converts implicitly, and every mistake is reported with where it happened.</p>
+      <div class="cmd"><code>curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/mwarpinski/AIPL/main/install.sh | sh</code><button class="copy" type="button">Copy</button></div>
+      <div class="cta">
+        <a class="btn primary" href="/install.html">Install</a>
+        <a class="btn" href="https://github.com/mwarpinski/AIPL/blob/main/docs/TOUR.md">Ten-minute tour</a>
+      </div>
+    </div>
+
+    <div class="window" data-tabs>
+      <div class="tabs" role="tablist" aria-label="An example program">
+        <button role="tab" id="t-src" aria-controls="p-src" aria-selected="true">gcd.aipl</button>
+        <button role="tab" id="t-run" aria-controls="p-run" aria-selected="false" tabindex="-1">run it</button>
+        <button role="tab" id="t-err" aria-controls="p-err" aria-selected="false" tabindex="-1">a type mistake</button>
+      </div>
+      <div role="tabpanel" id="p-src" aria-labelledby="t-src">
+<pre data-lang="aipl"><code>(module gcd
+  (import io)
+
+  ;; Greatest common divisor. The contracts are checked on every call.
+  (fn gcd [a:i32 b:i32] -> i32
+    (req (and (gt a 0) (gt b 0)))
+    (ens (gt res 0))
+    (let x:i32 a)
+    (let y:i32 b)
+    (while (neq y 0)
+      (let t:i32 y)
+      (set! y (% x y))
+      (set! x t))
+    x)
+
+  (fn main [] -> i32
+    (println "gcd: {(call gcd 1071 462)}")
+    (println "gcd: {(call gcd 10 0)}")
+    0))</code></pre>
+      </div>
+      <div role="tabpanel" id="p-run" aria-labelledby="t-run" hidden>
+<pre><span class="d">$</span> aipl compile --exe gcd.aipl -o gcd &amp;&amp; ./gcd
+gcd: 21
+<span class="e">./gcd: Pre-condition failed in 'gcd': (req (and (gt a 0) (gt b 0))) with a = 10, b = 0</span>
+<span class="d">  at gcd (gcd.aipl:6:10)
+  at main (gcd.aipl:18:14)</span></pre>
+      </div>
+      <div role="tabpanel" id="p-err" aria-labelledby="t-err" hidden>
+<pre><span class="d">$</span> aipl verify bad.aipl
+<span class="e">Error: bad.aipl: 18:14: Argument 2 of 'gcd' expects i32, got bool</span>
+  18 |     (println "gcd: {(call gcd 10 <span class="u">true</span>)}")
+     |              <span class="e">^</span></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="why">
+  <div class="wrap">
+    <h2>Fewer mistakes get written. The rest point at themselves.</h2>
+    <p class="sub">When a model writes code, the mistakes are predictable: an operator precedence it misread, an implicit conversion, an index one past the end, a bug that crashes far from its cause. AIPL removes the room for them.</p>
+    <div class="grid3">
+      <div class="card"><span class="num">01</span><h3>One way to write each thing</h3><p>Prefix S-expressions: no operator precedence, no indentation rules. Every parameter, return value, local and field has its type written out, and nothing converts implicitly.</p></div>
+      <div class="card"><span class="num">02</span><h3>Checks on the parts that go wrong</h3><p>Contracts (<code>req</code>, <code>ens</code>) run on every call. Array indexes are bounds-checked, integer arithmetic traps on overflow, and pointers are typed and checked, in compiled code as well as in the interpreter.</p></div>
+      <div class="card"><span class="num">03</span><h3>Errors an agent can act on</h3><p>Every compile error names the file, line and column. Every crash in a compiled program prints its call chain with a position for each frame. The output is meant to be pasted straight back to the model.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="tools">
+  <div class="wrap">
+    <h2>One small binary, the whole loop</h2>
+    <p class="sub">Write, check, test, ship. The compiler is written in AIPL, builds itself from a checked-in seed with no other toolchain, and ships as a single command.</p>
+    <div class="grid2">
+      <div class="card">
+        <h3>Check and run</h3>
+        <p><code>aipl verify</code> checks a file without running it. <code>aipl run</code> builds and runs it. <code>aipl eval -e</code> runs an expression. <code>aipl watch</code> re-checks as you save. <code>aipl lint</code> and <code>aipl fmt</code> keep a codebase uniform.</p>
+      </div>
+      <div class="card">
+        <h3>Tests live in the language</h3>
+        <p><code>(test "name" ...)</code> items sit beside the code they test, and <code>aipl test</code> runs each in a fresh process. <code>aipl doc</code> prints any module's public functions.</p>
+      </div>
+      <div class="card">
+        <h3>WebAssembly or a native executable</h3>
+        <p><code>aipl compile</code> makes a <code>.wasm</code> module; <code>--exe</code> makes a native Linux executable for x86-64 or AArch64. A hello-world is about 85&nbsp;KB, with no runtime to install next to it.</p>
+      </div>
+      <div class="card">
+        <h3>Sandboxed by default</h3>
+        <p>A program reaches the network, other programs and the file system only through grants you give at compile or run time, per host and per program. <code>--sandbox</code> confines files to the directory it starts in.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="trust">
+  <div class="wrap">
+    <h2>Built by agents, so it is checked like it was</h2>
+    <p class="sub">AIPL is designed by one person and implemented with AI coding agents; the commits say so. That is why the project leans on checking instead of on trust.</p>
+    <div class="grid3">
+      <div class="card"><h3>Two compilers that must agree</h3><p>A Rust <em>referee</em> and the self-hosted compiler must accept and refuse the same programs, give the same diagnostics, and behave the same on every program in a conformance suite.</p></div>
+      <div class="card"><h3>Every backend, every program</h3><p>The interpreter, WebAssembly and native code must agree. Fuzzers generate and mutate programs on every push, and the optimizer is checked against itself.</p></div>
+      <div class="card"><h3>The docs are tested too</h3><p>Every program in the documentation verifies, every quoted error message exists in the sources, every command exists. A release is built and signed by a workflow in the open.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- BENCH -->
+
+<section id="status">
+  <div class="wrap">
+    <h2>Where it stands</h2>
+    <p class="sub">Said up front, before anyone has to ask.</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Platform</th><th>Status</th><th>What you get</th></tr></thead>
+        <tbody>
+          <tr><td>Linux x86-64</td><td><span class="pill ok">supported</span></td><td>The self-hosted <code>aipl</code>, built from the seed with no Rust; native executables</td></tr>
+          <tr><td>Linux AArch64</td><td><span class="pill ok">supported</span></td><td>The same, tested on arm64 machines in CI</td></tr>
+          <tr><td>macOS (Apple silicon)</td><td><span class="pill pre">preview</span></td><td>The Rust <code>aipl</code> and a WebAssembly runner; <code>--exe</code> bundles the launcher (15 to 20&nbsp;MB)</td></tr>
+          <tr><td>Windows 10/11 (x86-64)</td><td><span class="pill pre">preview</span></td><td>The same, with an installer in PowerShell</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:24px;color:var(--ink-2)">The question the project exists to answer, whether agents write correct programs more often in AIPL than in other languages, <strong>has not been measured yet</strong>. The language is not stable, and there are no packages. <a href="/status.html">The full list</a>.</p>
+  </div>
+</section>
